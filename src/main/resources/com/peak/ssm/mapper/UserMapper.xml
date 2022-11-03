@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.peak.ssm.mapper.UserMapper">
+
+    <resultMap id="UserinfoResultMap" type="com.peak.ssm.pojo.Userinfo" autoMapping="true">
+        <id column="id" property="id"/>
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <association property="loginRoles" javaType="com.peak.ssm.pojo.LoginRoles" >
+            <id column="id" property="id" />
+            <result column="name" property="name" />
+            <result column="avatar" property="avatar" />
+            <result column="introduction" property="introduction" />
+            <!--类型处理程序，将数组类型处理完后返回字符串类型的Json字符串-->
+            <result column="role" property="role"/>
+        </association>
+    </resultMap>
+
+<!--    public List<Userinfo> selectRoleByPrimaryKey(@Param("id") int id);-->
+    <select id="selectRoleByPrimaryKey" resultMap="UserinfoResultMap" resultType="Userinfo">
+        select u.id,u.username,u.password,r.id,r.name,r.avatar,r.introduction,r.role from t_user u left join t_role r on u.id=r.id where u.id=#{id}
+    </select>
+
+    <!--public List<User> getUserName(@Param("username") String username);;-->
+    <select id="getUserName" resultType="LoginUser">
+        select * from t_user  where username = #{username}
+    </select>
+
+    <select id="selectAllRole" resultType="UserRole">
+        select * from t_user u left join t_role r on u.id=r.id
+    </select>
+
+
+    <insert id="addRole" keyProperty="id" useGeneratedKeys="true">
+        insert into t_user values(0,#{userRole.username},#{userRole.password});
+        insert into t_role values(0,#{userRole.name},#{userRole.avatar},#{userRole.introduction},#{userRole.role});
+    </insert>
+
+    <delete id="delRole" parameterType="UserRole">
+        delete from t_user where id=#{id};
+        ALTER TABLE  t_user AUTO_INCREMENT = #{id};
+        delete from t_role where id=#{id};
+        ALTER TABLE t_role AUTO_INCREMENT = #{id};
+    </delete>
+
+    <update id="updateRole" parameterType="UserRole">
+        update t_user set username=#{userRole.username},password=#{userRole.password} where id=#{userRole.id};
+        update t_role set name=#{userRole.name},avatar=#{userRole.avatar},introduction=#{userRole.introduction},role=#{userRole.role} where id=#{userRole.id};
+    </update>
+
+</mapper>

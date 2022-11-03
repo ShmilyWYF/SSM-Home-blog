@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.peak.ssm.mapper.BlogMapper">
+
+    <resultMap id="queryAllBlogresult" type="com.peak.ssm.pojo.Blog" autoMapping="true">
+        <id column="id" property="id"/>
+        <result column="t_time" property="t_time"/>
+        <result column="t_body" property="t_body"/>
+        <result column="t_by" property="t_by"/>
+        <result column="t_times" property="t_times"/>
+    </resultMap>
+    <!--    &lt;!&ndash;    public List<Blog> queryBlog();&ndash;&gt;-->
+    <select id="queryAllBlog" resultMap="queryAllBlogresult">
+        select *
+        from t_blog
+    </select>
+
+    <!--    public int AddBlog(@Param("blog") Blog blog);-->
+    <!--    <insert id="AddBlog" useGeneratedKeys="true" keyProperty="id" parameterType="com.peak.ssm.pojo.Blog">-->
+    <!--        insert into t_blog(t_time,t_body,t_by,t_times) values(#{blog.t_time},#{blog.t_body},#{blog.t_by},#{blog.t_times})-->
+    <!--    </insert>-->
+
+
+    <!--    public List<BlogwebFetchList> fetchList();-->
+    <resultMap id="getAllBlogwebFetchList" type="com.peak.ssm.pojo.BlogwebFetchList" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="desc" column="desc"/>
+        <result property="name" column="name"/>
+        <association property="fetchList" javaType="com.peak.ssm.pojo.FetchList">
+            <id property="id" column="id"/>
+            <result property="isTop" column="isTop"/>
+            <result property="banner" column="banner"/>
+            <result property="isHot" column="isHot"/>
+            <result property="pubTime" column="pubTime"/>
+            <result property="title" column="list_title"/>
+            <result property="summary" column="summary"/>
+            <result property="viewsCount" column="viewsCount"/>
+        </association>
+    </resultMap>
+    <select id="getfetchList" resultMap="getAllBlogwebFetchList" resultType="BlogwebFetchList">
+        select * from t_blogweb as blog left join t_list as list on blog.id = list.id
+    </select>
+
+    <insert id="addblogweblist" keyProperty="id" useGeneratedKeys="true">
+        insert into t_blogweb values(0,#{blogwebFetchList.title},#{blogwebFetchList.desc},#{blogwebFetchList.name});
+        insert into t_list    values(0,#{blogwebFetchList.fetchList.isTop},#{blogwebFetchList.fetchList.banner},#{blogwebFetchList.fetchList.isHot},#{blogwebFetchList.fetchList.pubTime},#{blogwebFetchList.fetchList.title},#{blogwebFetchList.fetchList.summary},#{blogwebFetchList.fetchList.viewsCount});
+    </insert>
+
+    <delete id="delblogweblist" >
+        DELETE from t_blogweb WHERE id=#{id};
+        ALTER TABLE  t_blogweb AUTO_INCREMENT = #{id};
+        DELETE from t_list WHERE id=#{id};
+        ALTER TABLE  t_list AUTO_INCREMENT = #{id};
+    </delete>
+
+    <select id="getfetchListId" resultMap="getAllBlogwebFetchList" resultType="BlogwebFetchList">
+        select * from t_blogweb as b left join t_list as l on b.id=l.id where b.id=#{i}
+    </select>
+</mapper>

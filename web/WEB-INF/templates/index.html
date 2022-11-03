@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎访问</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" th:href="@{static/css/index.css}">
+</head>
+<body>
+<div id="app">
+    <div>
+        <el-row :gutter="8">
+            <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}">
+                <el-card class="box-card" :body-style="{ height: '100%' }" style="background-color: #949494c2;border: none;">
+                    <h1>《羊皮卷》项目简介</h1>
+                    <h6 style="padding-left: 10%;">🎃目前时间：{{newDate}}🎃</h6>
+                    <hr>
+                    <p>这是一个综合的多项目，主要采用 Vue + SSM 技术栈开发。</p>
+                    <p>技术栈会随时更新。</p>
+                    <p>除了用于练手作项目，我还希望该项目可以作为一些常见 Web 项目的脚手架，帮助大家简化搭建网站的流程。之所以叫羊皮卷，是因为它代表 奋斗 开始，会随着时间的推移逐渐完善.</p>
+                    <P>感谢 IntelliJ IDEA 它确实是 Java 领域最好用的 IDE。</P>
+                    <img th:src="@{/static/images/idealog.jpg}"  width="15%" alt="idea图标"/>
+                    <br/>
+                    <el-button type="primary" @click="home" style="display: block;margin: 10px auto;">
+                        进入我的项目页首
+                    </el-button>
+                    <el-card :body-style="{ padding: '0' }" style="background-color: #A2A2A284;border: none;">
+                        <el-timeline :reverse="reverse" style="margin: 5% 0;">
+                            <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp">
+                                {{activity.content}}
+                            </el-timeline-item>
+                        </el-timeline>
+                    </el-card>
+                </el-card>
+            </el-col>
+        </el-row>
+    </div>
+</div>
+
+<script src="../../static/js/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
+<script type="text/javascript">
+    const vr=new VueRouter()
+    const app = new Vue({
+        el: '#app',
+        data(){
+            return {
+                newDate: new Date(),
+                reverse: false,
+                activities: [{
+                    content: '项目完成第一阶段',
+                    timestamp: '2022-05-20'
+                },{
+                    content: '项目创建日期',
+                    timestamp: '2022-05-15',
+                }]
+            }
+        },
+        mounted () {
+            let that = this
+            this.timer = setInterval(function () {
+                that.newDate = new Date().toLocaleString()
+            })
+        },
+        // 销毁时清除计时器
+        beforeDestroy: function () {
+            if (this.timer) {
+                clearInterval(this.timer)
+            }
+        },
+        methods:{
+            home:function(){
+                window.location.href="/home";
+            },
+        },
+
+    })
+
+</script>
+
+<style>
+        .el-col-lg-12 {
+            margin: auto;
+            float: none;
+        }
+</style>
+</body>
+</html>

@@ -1,0 +1,25 @@
+.quick-nav {
+    position: static;
+}
+.monster {
+    width: 10%;
+    position: fixed;
+    top: 80%;
+    left: 90%;
+}
+
+.readme {
+    width: 15%;
+    position: fixed;
+    margin-bottom: 50%;
+    top: 80%;
+    left: 0%;
+}
+
+.spark {
+    position: fixed;
+    margin-left: 50%;
+    top: 75%;
+    left: 45%;
+}
+

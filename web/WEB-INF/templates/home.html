@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" th:href="@{static/css/home.css}">
+    <link rel="stylesheet" th:href="@{static/css/home_quicknav.css}">
+    <link rel="stylesheet" th:href="@{static/css/home_carouel.css}">
+    <link rel="stylesheet" th:href="@{static/css/layout/layout.scss}">
+</head>
+<body>
+<div id="app">
+
+    <el-container>
+
+
+        <el-header class="header">
+            <el-row :gutter="8" style="height: 100%;">
+                <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 24}" :xl="{span: 24}">
+                    <my-header/>
+                </el-col>
+            </el-row>
+        </el-header>
+        <el-main class="main">
+            <el-row :gutter="8" style="height: 100%;">
+                <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 24}" :xl="{span: 24}">
+                    <router-view/>
+                </el-col>
+            </el-row>
+        </el-main>
+
+    </el-container>
+
+</div>
+<input type="hidden" id="urlval" th:value="${urlval}">
+
+<script src="../../static/js/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="../../static/vue/my-header.js"></script>
+
+<script type="module">
+    import router from "../../static/js/router.js";
+
+    const app = new Vue({
+        el: '#app',
+        data() {
+            return {};
+        },
+        methods: {},
+        router: router,
+    })
+
+</script>
+<style type="text/css">
+    .el-container {
+        background: #E9EEF3;
+    }
+
+    .header {
+        color: #FFFFFF00;
+        width: 100%;
+        background-color: #FFFFFF00;
+        display: block;
+        margin: 0.5% auto;
+    }
+
+    .main {
+        color: #FFFFFF00;
+    }
+
+    .el-menu-item:focus, .el-menu-item:hover {
+        outline: 0;
+        background-color: #b8bbbd;
+    }
+
+    .footer-card {
+        position: fixed;
+        bottom: 1%;
+        left: 14%;
+        width: 85%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    span {
+        pointer-events: none;
+    }
+</style>
+</body>
+</html>
